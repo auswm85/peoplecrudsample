@@ -1,24 +1,22 @@
 {% if form.errors %}
 	<div class="alert alert-danger">
-		<ul>
+		<ul class="list-unstyled">
 			{% for field_name, field_errors in form.errors|dictsort if field_errors %}
 				{% for error in field_errors %}
-	                <li>{{ form[field_name].label }}: {{ error }}</li>
-	            {% endfor %}
+            <li>{{ form[field_name].label }}: {{ error }}</li>
+        {% endfor %}
 			{% endfor %}
 		</ul>
 	</div>
 {% endif %}
 
-<form method="POST", action="/">
- 	{{ form.csrf_token }}
-
+<form method="POST", action="{{request.url}}">
  	{% for field in form %}
- 		<div class="form-group">
+ 		<div class="form-group {% if field.errors %} has-error {% endif %}">
 			{{field.label}}
 			{{field(class="form-control")}}
 		</div>
  	{% endfor %}	
 	
-	<button type="submit" class="btn btn-primary">Submit</button>
+	<button type="submit" class="btn btn-block btn-primary">Submit</button>
 </form>
