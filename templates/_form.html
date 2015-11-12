@@ -1,0 +1,24 @@
+{% if form.errors %}
+	<div class="alert alert-danger">
+		<ul>
+			{% for field_name, field_errors in form.errors|dictsort if field_errors %}
+				{% for error in field_errors %}
+	                <li>{{ form[field_name].label }}: {{ error }}</li>
+	            {% endfor %}
+			{% endfor %}
+		</ul>
+	</div>
+{% endif %}
+
+<form method="POST", action="/">
+ 	{{ form.csrf_token }}
+
+ 	{% for field in form %}
+ 		<div class="form-group">
+			{{field.label}}
+			{{field(class="form-control")}}
+		</div>
+ 	{% endfor %}	
+	
+	<button type="submit" class="btn btn-primary">Submit</button>
+</form>
