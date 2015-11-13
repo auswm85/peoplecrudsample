@@ -20,7 +20,7 @@ app.Controller = {
 
     app.Model.add(data).done(function(resp){
         if(resp.success){
-          app.Controller.reload(pp.config.baseurl);
+          app.Controller.reload(app.config.baseurl);
         }
     });
   },
