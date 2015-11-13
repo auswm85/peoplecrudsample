@@ -10,15 +10,15 @@
 	</div>
 {% endif %}
 
-<form method="POST", action="{{request.url}}">
+<form method="POST" action="{%if request.path == '/' %}/new {%else%} {{request.url}} {% endif %}">
  	{% for field in form %}
  		<div class="form-group {% if field.errors %} has-error {% endif %}">
 			{{field.label}}
-			{{field(class="form-control")}}
+			{{field(class="form-control required")}}
 		</div>
  	{% endfor %}	
 	
-	<button type="submit" class="btn btn-block btn-primary">Submit</button>
+	<button {%if request.path == '/' %} id="addPerson" {% endif %} type="submit" class="btn btn-block btn-primary">Submit</button>
 </form>
 
 {% block footer_scripts %}
@@ -29,6 +29,31 @@
           changeYear: true,
           yearRange: "-30:-5",
           defaultDate: '-18Y'
+      });
+
+      $('#addPerson').on('click', function(){
+      	var form = $('form');
+
+      	form.validate({
+      		errorPlacement: function(error, element) {  
+          	$(element).attr({"title": error.append()});
+          },
+      		highlight: function(element, errorClass, validClass){
+      			$(element).parent('.form-group').addClass('has-error');
+      		},
+      		unhighlight: function(element, errorClass, validClass){
+      			$(element).parent('.form-group').removeClass('has-error');
+      		}
+      	});
+
+      	var isValid = form.valid();
+
+      	if(isValid){		
+      	  var data = $('form').serialize();
+      	  app.Controller.addPerson(data);
+      	}
+
+      	return false;
       });
     });
   </script>

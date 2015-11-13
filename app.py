@@ -5,13 +5,14 @@ from forms import PersonForm
 app = Flask(__name__)
 app.debug = True
 
-@app.route("/", methods=['GET', 'POST'])
+@app.route("/", methods=['GET', 'POST'], endpoint="index")
 def index():
 	people = Person.select()
+	form = PersonForm()
 
-	return render_template('index.html', people=people)
+	return render_template('index.html', people=people, form=form)
 
-@app.route("/new", methods=['GET', 'POST'])
+@app.route("/new", methods=['GET', 'POST'], endpoint="create")
 def create():
 	form = PersonForm(request.form)
 
@@ -22,11 +23,14 @@ def create():
 							birthday=form.birthday.data,
 							zipcode=form.zipcode.data)
 		
-		return redirect('/')
+		if(request.is_xhr):
+			return jsonify(success=True, person=person.serialize())
+		else:
+			return redirect('/')
 
 	return render_template('create.html', form=form)
 
-@app.route("/edit/<int:id>", methods=['GET', 'POST'])
+@app.route("/edit/<int:id>", methods=['GET', 'POST'], endpoint="edit")
 def edit(id):
 	person = Person.get(Person.id == id)
 	form = PersonForm(request.form, person)
@@ -42,7 +46,7 @@ def edit(id):
 
 	return render_template('edit.html', form=form, person=person)
 
-@app.route('/delete/<int:id>', methods=['GET', 'POST'])
+@app.route('/delete/<int:id>', methods=['GET', 'POST'], endpoint="delete")
 def delete(id):
 	person = Person.get(Person.id == id)
 
@@ -57,4 +61,5 @@ def delete(id):
 	return render_template('delete.html', person=person)
 
 if __name__ == "__main__":
+	Person.create_table(fail_silently=True)
 	app.run()

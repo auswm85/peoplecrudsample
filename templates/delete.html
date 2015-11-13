@@ -12,7 +12,7 @@
         </p>
       </div>
 
-      <form action="/delete/{{person.id}}" method="POST">
+      <form action="{{url_for('delete', id=person.id)}}" method="POST">
          <a class="btn btn-default" href="{{request.referrer}}">
            <span class="glyphicon glyphicon-ban-circle"></span> Cancel
           </a>

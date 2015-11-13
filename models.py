@@ -1,6 +1,6 @@
 from peewee import *
-
-db = SqliteDatabase('people.db')
+import os
+db = SqliteDatabase( os.path.dirname(os.path.abspath(__file__)) + 'people.db' )
 
 class Person(Model):
   firstname = CharField()
