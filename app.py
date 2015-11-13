@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, jsonify
+from flask import Flask, render_template, request, redirect, jsonify, url_for
 from models import Person
 from forms import PersonForm
 
@@ -26,7 +26,7 @@ def create():
 		if(request.is_xhr):
 			return jsonify(success=True, person=person.serialize())
 		else:
-			return redirect('/')
+			return redirect(url_for('index'))
 
 	return render_template('create.html', form=form)
 
@@ -42,7 +42,7 @@ def edit(id):
 		person.zipcode = form.zipcode.data
 		person.save()
 
-		return redirect('/')
+		return redirect(url_for('index'))
 
 	return render_template('edit.html', form=form, person=person)
 
@@ -56,7 +56,7 @@ def delete(id):
 		if request.is_xhr:
 			return jsonify(success=True, person=person.serialize())
 		else:
-			return redirect('/')
+			return redirect(url_for('index'))
 
 	return render_template('delete.html', person=person)
 

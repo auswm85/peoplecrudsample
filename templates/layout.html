@@ -29,6 +29,9 @@
 
 		{% block content %}{% endblock %}		
 	</div>
+    <script type="text/javascript">
+        app.config.baseurl = '{{url_for("index")}}';
+    </script>
     {% block footer_scripts %}{% endblock %}
 </body>
 </html>
