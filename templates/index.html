@@ -2,9 +2,17 @@
 
 {% block content %}
 	<div class="row">
-		<div class="col-md-6 col-md-offset-3">
-			<a class="btn btn-primary pull-right" href="/new" style="margin-bottom:10px;">
-				New <span class="glyphicon glyphicon-user"></span>
+		<div class="col-md-8 col-md-offset-2">
+
+			<div class="jumbotron">
+				<h2>Person Manager</h2>
+				<p>
+					This is a super awesome app for managing people. Feel free to add/remove/update users.
+				</p>
+			</div>
+
+			<a class="btn btn-primary btn-sm pull-right" href="/new" title="Add new person" style="margin-bottom:10px;">
+				<i class="fa fa-user-plus"></i>
 			</a>
 
 			<table class="table table-striped">
@@ -22,9 +30,14 @@
 						<td>{{person.birthday.strftime('%m/%d/%Y')}}</td>
 						<td>{{person.zipcode}}</td>
 						<td>
-							<a class="btn btn-sm btn-default" href="/edit/{{person.id}}">
+							<a class="btn btn-xs btn-default" href="/edit/{{person.id}}">
 								<span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
 							</a>
+
+							<a class="btn btn-xs btn-danger" href="/delete/{{person.id}}">
+								<i class="fa fa-ban"></i>
+							</a>
+
 						</td>
 					</tr>
 				{% endfor %}

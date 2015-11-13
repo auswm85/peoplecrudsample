@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, request, redirect, jsonify
 from models import Person
 from forms import PersonForm
 
@@ -48,7 +48,11 @@ def delete(id):
 
 	if request.method == 'POST':
 		person.delete_instance()
-		return redirect('/')
+
+		if request.is_xhr:
+			return jsonify(success=True, person=person.serialize())
+		else:
+			return redirect('/')
 
 	return render_template('delete.html', person=person)
 

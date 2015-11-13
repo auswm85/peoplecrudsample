@@ -4,15 +4,52 @@
 {% block content %}
 	<div class="row">
 		<div class="col-md-6 col-md-offset-3">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Edit Person </h3>
+        </div>
+        <div class="panel-body">
+    			{% include "_form.html" %}
 
-			{% include "_form.html" %}
-
-      <form action="/delete/{{person.id}}">
-         <button id="btnDelete" type="submit" class="btn btn-block btn-danger" style="margin-top:20px;">
-            <span class="glyphicon glyphicon-remove"></span> Delete
-         </button>
-      </form>
-
-		</div>
+          <form action="/delete/{{person.id}}">
+             <button id="btnDelete" type="submit" class="btn btn-block btn-danger" style="margin-top:20px;">
+                <span class="glyphicon glyphicon-remove"></span> Delete
+             </button>
+          </form>
+        </div>
+  		</div>
+    </div>
 	</div>
+
+  <div class="modal fade" id="deleteConfirm">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Confirm Delete</h4>
+        </div>
+        <div class="modal-body">
+          <p>
+            Are you sure you want to delete <strong>{{person.firstname}} {{person.lastname}}</strong>? This action can't be undone.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" onclick="app.Controller.deletePerson({{person.id}})" class="btn btn-danger">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+
+{% block footer_scripts %}
+  <script type="text/javascript">
+    $(function(){
+      $('#btnDelete').on('click', function(e){
+          $('#deleteConfirm').modal('show');
+          return false;
+      });
+    });
+  </script>
 {% endblock %}

@@ -13,11 +13,11 @@
       </div>
 
       <form action="/delete/{{person.id}}" method="POST">
-         <a class="btn btn-default" href="/edit/{{person.id}}">
+         <a class="btn btn-default" href="{{request.referrer}}">
            <span class="glyphicon glyphicon-ban-circle"></span> Cancel
           </a>
 
-         <button id="btnDelete" type="submit" class="btn btn-danger">
+         <button id="btnDelete" type="submit" class="btn btn-danger" title="delete">
             <span class="glyphicon glyphicon-remove"></span> Delete
          </button>
          

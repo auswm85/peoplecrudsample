@@ -20,3 +20,16 @@
 	
 	<button type="submit" class="btn btn-block btn-primary">Submit</button>
 </form>
+
+{% block footer_scripts %}
+  <script type="text/javascript">
+    $(function(){
+      $('#birthday').datepicker({
+          changeMonth: true,
+          changeYear: true,
+          yearRange: "-30:-5",
+          defaultDate: '-18Y'
+      });
+    });
+  </script>
+{% endblock %}
