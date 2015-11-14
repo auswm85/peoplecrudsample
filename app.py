@@ -23,10 +23,14 @@ def create():
 							birthday=form.birthday.data,
 							zipcode=form.zipcode.data)
 		
-		if(request.is_xhr):
+		if request.is_xhr:
 			return jsonify(success=True, person=person.serialize())
 		else:
 			return redirect(url_for('index'))
+
+	# if it's an ajax request and if fails form validation return message to client
+	if request.is_xhr and request.method == 'POST' and not form.validate():
+		return jsonify(success=False, errors=form.errors)
 
 	return render_template('create.html', form=form)
 
