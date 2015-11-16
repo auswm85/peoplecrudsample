@@ -1,28 +1,27 @@
 {% extends "layout.html" %}
 
-
 {% block content %}
-  <div class="row">
-    <div class="col-md-6 col-md-offset-3">
-      
-      <div class="alert alert-danger">
-        <p>
-          <strong>Warning!</strong>
-          Are you sure you want to delete {{person.firstname}} {{person.lastname}}? This action cannot be undone.
-        </p>
-      </div>
-
-      <form action="{{url_for('delete', id=person.id)}}" method="POST">
-         <a class="btn btn-default" href="{{request.referrer}}">
-           <span class="glyphicon glyphicon-ban-circle"></span> Cancel
-          </a>
-
-         <button id="btnDelete" type="submit" class="btn btn-danger" title="delete">
-            <span class="glyphicon glyphicon-remove"></span> Delete
-         </button>
-         
-      </form>
-      
+<div class="row">
+  <div class="col-md-6 col-md-offset-3">
+    
+    <div class="alert alert-danger">
+      <p>
+        <strong>Warning!</strong>
+        Are you sure you want to delete {{person.firstname}} {{person.lastname}}? This action cannot be undone.
+      </p>
     </div>
+
+    <form action="{{url_for('delete', id=person.id)}}" method="POST">
+       <a class="btn btn-default" href="{{request.referrer}}">
+         <span class="glyphicon glyphicon-ban-circle"></span> Cancel
+        </a>
+
+       <button id="btnDelete" type="submit" class="btn btn-danger" title="delete">
+          <span class="glyphicon glyphicon-remove"></span> Delete
+       </button>
+       
+    </form>
+    
   </div>
+</div>
 {% endblock %}
