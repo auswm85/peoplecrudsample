@@ -10,11 +10,13 @@
 	</div>
 {% endif %}
 
+<div id="errorContainer" class="alert alert-danger hidden"><ul class="list-unstyled"></ul></div>
+
 <form method="POST" action="{%if request.path == '/' %}/new {%else%} {{request.url}} {% endif %}">
  	{% for field in form %}
  		<div class="form-group {% if field.errors %} has-error {% endif %}">
 			{{field.label}}
-			{{field(class="form-control required")}}
+			{{field(class="form-control")}}
 		</div>
  	{% endfor %}	
 	
@@ -31,25 +33,61 @@
           defaultDate: '-18Y'
       });
 
+      jQuery.validator.addMethod(
+			    "dateUS",
+			    function(value, element) {
+			        var check = false;
+			        var re = /^\d{1,2}\/\d{1,2}\/\d{4}$/;
+			        if( re.test(value)){
+			            var adata = value.split('/');
+			            var mm = parseInt(adata[0],10);
+			            var dd = parseInt(adata[1],10);
+			            var yyyy = parseInt(adata[2],10);
+			            var xdata = new Date(yyyy,mm-1,dd);
+			            if ( ( xdata.getFullYear() == yyyy ) && ( xdata.getMonth () == mm - 1 ) && ( xdata.getDate() == dd ) )
+			                check = true;
+			            else
+			                check = false;
+			        } else
+			            check = false;
+			        return this.optional(element) || check;
+			    },
+			    "Please enter a date in the format mm/dd/yyyy"
+			);
+
+      $('form').validate({
+    		rules:{
+    			firstname: { required: true },
+    			lastname: { required: true },
+    			zipcode: { required: true },
+    			birthday: { required: true, dateUS: true }
+    		},
+    		messages: {
+    			firstname: { required: "First Name is required"  },
+    			lastname: { required: "Last Name is required"  },
+    			zipcode: { required: "Zip Code is required"  },
+    			birthday: { required: "Birthday is required" }
+    		},
+    		errorContainer: '#errorContainer',
+    		errorLabelContainer: '#errorContainer ul',
+    		wrapper: 'li',
+    		highlight: function(element, errorClass, validClass){
+    			$(element).parent('.form-group').addClass('has-error');
+    		},
+    		unhighlight: function(element, errorClass, validClass){
+    			$(element).parent('.form-group').removeClass('has-error');
+    		},
+    		invalidHandler: function(evt, validator){
+    			$('#errorContainer').removeClass('hidden');
+    		}
+    	});
+
       $('#addPerson').on('click', function(){
       	var form = $('form');
-
-      	form.validate({
-      		errorPlacement: function(error, element) {  
-          	$(element).attr({"title": error.append()});
-          },
-      		highlight: function(element, errorClass, validClass){
-      			$(element).parent('.form-group').addClass('has-error');
-      		},
-      		unhighlight: function(element, errorClass, validClass){
-      			$(element).parent('.form-group').removeClass('has-error');
-      		}
-      	});
-
       	var isValid = form.valid();
 
       	if(isValid){		
-      	  var data = $('form').serialize();
+      	  var data = form.serialize();
       	  app.Controller.addPerson(data);
       	}
 
