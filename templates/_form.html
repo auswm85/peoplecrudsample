@@ -55,11 +55,15 @@
 			    "Please enter a date in the format mm/dd/yyyy"
 			);
 
+			jQuery.validator.addMethod("zipcode", function(value, element) {
+			  return this.optional(element) || /^\d{5}(?:-\d{4})?$/.test(value);
+			}, "Please provide a valid zipcode.");
+
       $('form').validate({
     		rules:{
     			firstname: { required: true },
     			lastname: { required: true },
-    			zipcode: { required: true },
+    			zipcode: { required: true, zipcode:true },
     			birthday: { required: true, dateUS: true }
     		},
     		messages: {
