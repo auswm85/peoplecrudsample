@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, jsonify, url_for
+from flask import Flask, render_template, request, redirect, jsonify, url_for, abort
 from models import Person
 from forms import PersonForm
 
@@ -37,7 +37,11 @@ def create():
 
 @app.route("/edit/<int:id>", methods=['GET', 'POST'], endpoint="edit")
 def edit(id):
-    person = Person.get(Person.id == id)
+    try:
+        person = Person.get(Person.id == id)
+    except Person.DoesNotExist:
+        abort(404)
+
     form = PersonForm(request.form, person)
 
     if request.method == "POST" and form.validate():
@@ -53,7 +57,10 @@ def edit(id):
 
 @app.route('/delete/<int:id>', methods=['GET', 'POST'], endpoint="delete")
 def delete(id):
-    person = Person.get(Person.id == id)
+    try:
+        person = Person.get(Person.id == id)
+    except Person.DoesNotExist:
+        abort(404)
 
     if request.method == 'POST':
         person.delete_instance()
@@ -64,6 +71,10 @@ def delete(id):
             return redirect(url_for('index'))
 
     return render_template('delete.html', person=person)
+
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html'), 404
 
 if __name__ == "__main__":
     Person.create_table(fail_silently=True)
