@@ -3,7 +3,7 @@ from models import Person
 from forms import PersonForm
 
 app = Flask(__name__)
-app.debug = True
+app.debug = False
 
 @app.route("/", methods=['GET', 'POST'], endpoint="index")
 def index():
