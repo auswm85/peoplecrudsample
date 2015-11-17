@@ -57,7 +57,7 @@
 
 			jQuery.validator.addMethod("zipcode", function(value, element) {
 			  return this.optional(element) || /^\d{5}(?:-\d{4})?$/.test(value);
-			}, "Please provide a valid zipcode.");
+			}, "Please provide a valid US zip code.");
 
       $('form').validate({
     		rules:{
